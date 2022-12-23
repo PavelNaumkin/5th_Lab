@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Net.Http.Headers;
 
 namespace _5th_Lab
 {
-
     public class Class_Of_Usefull_Methods
     {
         static bool Checking_For_Double(string message)
@@ -23,13 +23,15 @@ namespace _5th_Lab
         static public double Getting_Double_From_User()
         {
             double result = 0;
-            string message = Console.ReadLine();
-            do
+            while (true)
             {
-                if (Checking_For_Double(message)) result = Convert.ToDouble(message);
-                else { Console.WriteLine("Mistake!"); continue; }
-            } while (result <= 0);
-            return result;
+                string message = Console.ReadLine();
+                if (Checking_For_Double(message)) { 
+                    result = Convert.ToDouble(message); 
+                    return result; 
+                }
+            else Console.WriteLine("Mistake!");
+            }
         }
         static bool Checking_For_Int(string message)
         {
@@ -47,17 +49,31 @@ namespace _5th_Lab
         static public int Getting_Int_From_User()
         {
             int result = 0;
-            string message = Console.ReadLine();
-            do
+            while (true)
             {
-                if (Checking_For_Int(message)) result = Convert.ToInt32(message);
-                else { Console.WriteLine("Mistake!"); continue; }
-            } while (result <= 0);
-            return result;
+                string message = Console.ReadLine();
+                if (Checking_For_Double(message))
+                {
+                    result = Convert.ToInt32(message);
+                    return result;
+                }
+                else Console.WriteLine("Mistake!");
+            }
         }
-        public static void Printing_Array(int[] array) { for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} "); Console.WriteLine(); }
-        public static void Printing_Matrix(int[,] array) { for (int i = 0; i < array.GetLength(0); i++) { for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} "); Console.WriteLine(); } }
-        public static void Printing_Array(double[] array) { for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} "); Console.WriteLine(); }
+        public static void Printing_Array(int[] array) { 
+            
+            for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} "); 
+            Console.WriteLine(); 
+        }
+        public static void Printing_Matrix(int[,] array) { 
+            for (int i = 0; i < array.GetLength(0); i++) { 
+                for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} "); 
+                Console.WriteLine(); 
+            } 
+        }
+        public static void Printing_Array(double[] array) { 
+            for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} "); 
+            Console.WriteLine(); }
         public static void Printing_Matrix(double[,] array)
         {
             for (int i = 0; i < array.GetLength(0); i++)
@@ -67,9 +83,6 @@ namespace _5th_Lab
             }
         }
     }
-
-
-
     public class Task_1_Level_1 : Class_Of_Usefull_Methods
     {
         static int Getting_Factorial(int Num)
@@ -98,7 +111,13 @@ namespace _5th_Lab
         static double[] Taking_Arguments()
         {
             double[] Arr = new double[3];
-            for (int i = 0; i < 3; i++) Arr[i] = Getting_Double_From_User();
+            for (int i = 0; i < 3; i++) {
+                do
+                {
+                    Arr[i] = Getting_Double_From_User();
+                    if (Arr[i] <= 0) Console.WriteLine("Please, enter right params!");
+                } while (Arr[i] <= 0);
+             };
             return Arr;
         }
         static double Getting_Square(double[] arr)
@@ -154,6 +173,9 @@ namespace _5th_Lab
         {
             Console.WriteLine("Enter length of two arrays one by one. Then enter all elements of arrays one by one");
             double[] arr_1 = new double[Getting_Int_From_User()];
+
+            
+
             double[] arr_2 = new double[Getting_Int_From_User()];
 
             for (int i = 0; i < arr_1.Length; i++) arr_1[i] = Getting_Double_From_User();
@@ -174,9 +196,9 @@ namespace _5th_Lab
     {
         static int Finding_Maxi(double[,] matrix)
         {
-            int point = 0;
+            int point = 1;
             int Maxi_Ind = 0;
-            double Maxi = matrix[0, 0];
+            double Maxi = matrix[0, 1];
 
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
@@ -188,16 +210,15 @@ namespace _5th_Lab
             }
             return Maxi_Ind;
         }
-
         static int Finding_Mini(double[,] matrix)
         {
-            int point = 0;
-            int Mini_Ind = 0;
-            double Mini = matrix[matrix.GetLength(0) - 2, matrix.GetLength(1) - 1];
+            int point = 1;
+            int Mini_Ind = 1;
+            double Mini = matrix[0, 1];
 
-            for (int i = matrix.GetLength(0) - 2; i >= 0; i--)
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int x = matrix.GetLength(0) - 1; x >= matrix.GetLength(0) - 1 - point; x--)
+                for (int x = point; x < matrix.GetLength(0); x++)
                 {
                     if (matrix[i, x] < Mini) { Mini = matrix[i, x]; Mini_Ind = x; }
                 }
@@ -207,18 +228,35 @@ namespace _5th_Lab
         }
         static double[,] Clearing_Matrix(double[,] matrix, int pos_maxi, int pos_mini)
         {
-            double[,] Final_Matrix = new double[matrix.GetLength(0), matrix.GetLength(1) - 2];
+            if(pos_maxi!=pos_mini){
+                double[,] Final_Matrix = new double[matrix.GetLength(0), matrix.GetLength(1) - 2];
 
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                int pointer = 0;
-                for (int x = 0; x < matrix.GetLength(1); x++)
+                for (int i = 0; i < matrix.GetLength(0); i++)
                 {
-                    if ((x == pos_mini) || (x == pos_maxi)) { pointer++; continue; }
-                    Final_Matrix[i, x - pointer] = matrix[i, x];
+                    int pointer = 0;
+                    for (int x = 0; x < matrix.GetLength(1); x++)
+                    {
+                        if ((x == pos_mini) || (x == pos_maxi)) { pointer++; continue; }
+                        Final_Matrix[i, x - pointer] = matrix[i, x];
+                    }
                 }
+                return Final_Matrix;
             }
-            return Final_Matrix;
+            else
+            {
+                double[,] Final_Matrix = new double[matrix.GetLength(0), matrix.GetLength(1) - 1];
+
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    int pointer = 0;
+                    for (int x = 0; x < matrix.GetLength(1); x++)
+                    {
+                        if (x == pos_mini) { pointer++; continue; }
+                        Final_Matrix[i, x - pointer] = matrix[i, x];
+                    }
+                }
+                return Final_Matrix;
+            }
         }
         public void Cycling_Task()
         {
@@ -226,14 +264,15 @@ namespace _5th_Lab
             {
                 {20, 20, 20, 20, 20 },
                 {20, 20, 20, 20, 0 },
+                {20, 2220, 20, 20, 20},
                 {20, 20, 20, 20, 20},
-                {20, 20, 20, 20, 20},
-                {20, 30, 20, 20, 20 },
+                {20, 20, 20, 20, 220},
             };
 
             int Maxi_Pos = Finding_Maxi(Matrix);
             int Mini_Pos = Finding_Mini(Matrix);
-
+            Console.WriteLine(Mini_Pos);
+            Console.WriteLine(Maxi_Pos);
             Printing_Matrix(Clearing_Matrix(Matrix, Maxi_Pos, Mini_Pos));
         }
     }
@@ -316,7 +355,16 @@ namespace _5th_Lab
                 {5, 32, 5, 23, 89 },
                 {32, 34, 5, 2, 4 }
             };
-            if (Matrix_Checking(Matrix_1)) Console.WriteLine("Not enough elements in matrix!");
+            if (Matrix_Checking(Matrix_1))
+            {
+                for (int i = 0; i < Matrix_1.GetLength(0); i++)
+                {
+                    for (int x = 0; x < Matrix_1.GetLength(1); x++)
+                    {
+                        Matrix_1[i, x] *= 2;
+                    }
+                }
+            }
             else Main_Process_With_Matrix(Matrix_1);
         }
     }
@@ -357,6 +405,7 @@ namespace _5th_Lab
         }
         public double[,] Cycling_Rows_From_Matrix(double[,] matrix)
         {
+
             double[] array = new double[matrix.GetLength(1)];
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
@@ -364,7 +413,11 @@ namespace _5th_Lab
                 if (i % 2 == 0) method = Sorting_Array_Down;
                 else method = Sorting_Array_Up;
                 for (int x = 0; x < matrix.GetLength(1); x++) array[x] = matrix[i, x];
+
+
                 double[] sorted_array = method(array);
+
+
                 for (int x = 0; x < matrix.GetLength(1); x++) matrix[i, x] = sorted_array[x];
             }
             return matrix;
@@ -379,7 +432,9 @@ namespace _5th_Lab
                 {200, 10, 20, 0, 40},
                 {20, 30, 20, -40, 60 },
                 };
+
             double[,] Final_Matrix = Cycling_Rows_From_Matrix(Matrix);
+
             Printing_Matrix(Final_Matrix);
         }
     }
@@ -455,10 +510,29 @@ namespace _5th_Lab
             Console.WriteLine(Summing(method(matrix)));
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public class Programm
     {
         static void Main(string[] args)
         {
+
             Task_1_Level_1 Task_1 = new Task_1_Level_1();
             Task_1.Cycling_Task();
             Console.WriteLine();
@@ -470,6 +544,7 @@ namespace _5th_Lab
             Task_6_Level_2 Task_3 = new Task_6_Level_2();
             Task_3.Cycling_Task();
             Console.WriteLine();
+
 
             Task_10_Level_2 Task_4 = new Task_10_Level_2();
             Task_4.Cycling_Task();
@@ -486,6 +561,8 @@ namespace _5th_Lab
             Task_4_Level_3 Task_7 = new Task_4_Level_3();
             Task_7.Cycling_Task();
             Console.WriteLine();
+
+            
         }
     }
 }
