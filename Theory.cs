@@ -277,123 +277,131 @@ namespace _5th_Lab
         }
     }
     public class Task_23_Level_2 : Class_Of_Usefull_Methods
-{
-    public static void Printing_Array(double[] array)
     {
-        for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} ");
-        Console.WriteLine();
-    }
-    public static void Printing_Matrix(double[,] array)
-    {
-        for (int i = 0; i < array.GetLength(0); i++)
+        public static void Printing_Array(double[] array)
         {
-            for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} ");
+            for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} ");
             Console.WriteLine();
         }
-    }
-
-    static bool Checking_Presence_Of_Point(int[] Point, int[,] Indexes)
-    {
-        bool key = false;
-        for (int i = 0; i < Indexes.GetLength(0); i++) if ((Indexes[i, 0] == Point[0]) && (Indexes[i, 1] == Point[1])) { key = true; break; }
-        return key;
-    }
-
-    static bool Checking_Presence_In_List(int i, int x, List<List<int>> indexes)
-    {
-        bool key = false;
-        for (int z = 0; z < indexes.Count(); z++)
+        public static void Printing_Matrix(double[,] array)
         {
-            if ((indexes[z][0] == i) && (indexes[z][1] == x)) { key = true; break; }
-        }
-        return key;
-    }
-
-    static double[,] Reconstructing_Matrix(double[,] Matrix, int[,] Indexes)
-    {
-        for (int i = 0; i < Matrix.GetLength(0); i++)
-        {
-            for (int x = 0; x < Matrix.GetLength(1); x++)
+            for (int i = 0; i < array.GetLength(0); i++)
             {
-                int[] Point = { i, x };
-                if (Checking_Presence_Of_Point(Point, Indexes)) Matrix[i, x] *= 2;
-                else Matrix[i, x] /= 2;
+                for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} ");
+                Console.WriteLine();
             }
         }
-        return Matrix;
-    }
 
-    static bool Matrix_Checking(double[,] matrix)
-    {
-        if (matrix.GetLength(0) * matrix.GetLength(1) < 5) return true;
-        else return false;
-    }
-
-    static int[,] Getting_Indexes_Of_Maxis(double[,] Matrix)
-    {
-        List <List <int>> indexes = new List<List<int>>();
-        for (int i = 0; i < 5; i++) indexes.Add(Finding_Another_Maxi(Matrix, indexes));
-        int[,] Indexes = Rebuilding_List_Into_Array(indexes);
-        return Indexes;
-    }
-
-    static List<int> Finding_Another_Maxi(double[,] Matrix, List<List<int>> indexes)
-    {
-        double Maxi = Matrix[0, 0];
-        List<int> Maxi_Indexes = new List<int>();
-        Maxi_Indexes.Add(0); 
-        Maxi_Indexes.Add(0);
-
-        for (int i = 0; i < Matrix.GetLength(0); i++)
+        static bool Checking_Presence_Of_Point(int[] Point, int[,] Indexes)
         {
-            for (int x = 0; x < Matrix.GetLength(1); x++)
+            bool key = false;
+            for (int i = 0; i < Indexes.GetLength(0); i++) if ((Indexes[i, 0] == Point[0]) && (Indexes[i, 1] == Point[1])) { key = true; break; }
+            return key;
+        }
+
+        static bool Checking_Presence_In_List(int i, int x, List<List<int>> indexes)
+        {
+            bool key = false;
+            for (int z = 0; z < indexes.Count(); z++)
             {
-                if (Checking_Presence_In_List(i, x, indexes)) continue;
-                if (Matrix[i, x] > Maxi) { Maxi = Matrix[i, x]; Maxi_Indexes.Clear(); Maxi_Indexes.Add(i); Maxi_Indexes.Add(x); }
+                if ((indexes[z][0] == i) && (indexes[z][1] == x)) { key = true; break; }
             }
+            return key;
         }
-        
-        return Maxi_Indexes;
-    }
 
-    static int[,] Rebuilding_List_Into_Array(List<List<int>> indexes)
-    {
-        int[,] Indexes = new int[indexes.Count(), 2];
-
-        for (int i = 0; i < indexes.Count(); i++) {
-        
-            Indexes[i, 0] = indexes[i][0]; 
-            Indexes[i, 1] = indexes[i][1]; 
-        }
-        return Indexes;
-    }
-    static void Main_Process_With_Matrix(double[,] Matrix)
-    {
-        int[,] Indexes = Getting_Indexes_Of_Maxis(Matrix);
-        Printing_Matrix(Reconstructing_Matrix(Matrix, Indexes));
-    }
-    public void Cycling_Task()
-    {
-        double[,] Matrix_1 =
+        static double[,] Reconstructing_Matrix(double[,] Matrix, int[,] Indexes)
         {
+            for (int i = 0; i < Matrix.GetLength(0); i++)
+            {
+                for (int x = 0; x < Matrix.GetLength(1); x++)
+                {
+                    int[] Point = { i, x };
+                    if (Checking_Presence_Of_Point(Point, Indexes))
+                    {
+                        if (Matrix[i, x] > 0) Matrix[i, x] *= 2;
+                        else Matrix[i, x] /= 2;
+                    }
+                    else
+                    {
+                        if (Matrix[i, x] < 0) Matrix[i, x] *= 2;
+                        else Matrix[i, x] /= 2;
+                    }
+                }
+            }
+            return Matrix;
+        }
+
+        static bool Matrix_Checking(double[,] matrix)
+        {
+            if (matrix.GetLength(0) * matrix.GetLength(1) < 5) return true;
+            else return false;
+        }
+
+        static int[,] Getting_Indexes_Of_Maxis(double[,] Matrix)
+        {
+            List<List<int>> indexes = new List<List<int>>();
+            for (int i = 0; i < 5; i++) indexes.Add(Finding_Another_Maxi(Matrix, indexes));
+            int[,] Indexes = Rebuilding_List_Into_Array(indexes);
+            return Indexes;
+        }
+
+        static List<int> Finding_Another_Maxi(double[,] Matrix, List<List<int>> indexes)
+        {
+            double Maxi = Matrix[0, 0];
+            List<int> Maxi_Indexes = new List<int>();
+            Maxi_Indexes.Add(0);
+            Maxi_Indexes.Add(0);
+
+            for (int i = 0; i < Matrix.GetLength(0); i++)
+            {
+                for (int x = 0; x < Matrix.GetLength(1); x++)
+                {
+                    if (Checking_Presence_In_List(i, x, indexes)) continue;
+                    if (Matrix[i, x] > Maxi) { Maxi = Matrix[i, x]; Maxi_Indexes.Clear(); Maxi_Indexes.Add(i); Maxi_Indexes.Add(x); }
+                }
+            }
+
+            return Maxi_Indexes;
+        }
+
+        static int[,] Rebuilding_List_Into_Array(List<List<int>> indexes)
+        {
+            int[,] Indexes = new int[indexes.Count(), 2];
+
+            for (int i = 0; i < indexes.Count(); i++)
+            {
+
+                Indexes[i, 0] = indexes[i][0];
+                Indexes[i, 1] = indexes[i][1];
+            }
+            return Indexes;
+        }
+        static void Main_Process_With_Matrix(double[,] Matrix)
+        {
+            int[,] Indexes = Getting_Indexes_Of_Maxis(Matrix);
+            Printing_Matrix(Reconstructing_Matrix(Matrix, Indexes));
+        }
+        public void Cycling_Task()
+        {
+            double[,] Matrix_1 =
+            {
         {1, 2, 3, 4, 5 },
         {-32, -32, -90, -4, -2 },
         };
-        if (Matrix_Checking(Matrix_1)) Console.WriteLine("Not enough elements in matrix!");
-        if (Matrix_Checking(Matrix_1))
-        {
-            for (int i = 0; i < Matrix_1.GetLength(0); i++)
+            if (Matrix_Checking(Matrix_1)) Console.WriteLine("Not enough elements in matrix!");
+            if (Matrix_Checking(Matrix_1))
             {
-                for (int x = 0; x < Matrix_1.GetLength(1); x++)
+                for (int i = 0; i < Matrix_1.GetLength(0); i++)
                 {
-                    Matrix_1[i, x] *= 2;
+                    for (int x = 0; x < Matrix_1.GetLength(1); x++)
+                    {
+                        Matrix_1[i, x] *= 2;
+                    }
                 }
             }
+            else Main_Process_With_Matrix(Matrix_1);
         }
-        else Main_Process_With_Matrix(Matrix_1);
     }
-}
-
 
 
 
