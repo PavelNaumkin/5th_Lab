@@ -372,7 +372,7 @@ namespace _5th_Lab
         int[,] Indexes = Getting_Indexes_Of_Maxis(Matrix);
         Printing_Matrix(Reconstructing_Matrix(Matrix, Indexes));
     }
-    static void Cycling_Task()
+    public void Cycling_Task()
     {
         double[,] Matrix_1 =
         {
