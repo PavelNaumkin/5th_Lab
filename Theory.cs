@@ -323,7 +323,7 @@ namespace _5th_Lab
                     }
                     else
                     {
-                        if (Matrix[i, x] < 0) Matrix[i, x] *= 2;
+                        if (Matrix[i, x] > 0) Matrix[i, x] *= 2;
                         else Matrix[i, x] /= 2;
                     }
                 }
